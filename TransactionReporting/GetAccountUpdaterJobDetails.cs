@@ -26,9 +26,9 @@ namespace net.authorize.sample
 
             // parameters for request
             string month = "2017-06";
-            string modifiedTypeFilter = "all"
+            var modifiedTypeFilter = AUJobTypeEnum.all;
 
-            var request = new getAccountUpdaterJobDetailsRequest();
+            var request = new getAUJobDetailsRequest();
             request.month = month;
             request.modifiedTypeFilter = modifiedTypeFilter;
             request.paging = new Paging
@@ -38,7 +38,7 @@ namespace net.authorize.sample
             };
 
             // instantiate the controller that will call the service
-            var controller = new getAccountUpdaterJobDetailsController(request);
+            var controller = new getAUJobDetailsController(request);
             controller.Execute();
 
             // get the response from the service (errors contained if any)
@@ -49,7 +49,7 @@ namespace net.authorize.sample
                 if (response.auDetails == null)
                     return response;
 
-                foreach (var update in response.auDetails.auUpdate)
+                foreach (var update in response.auDetails)
                 {
                     Console.WriteLine("Profile ID / Payment Profile ID: {0} / {1}", update.customerProfileID, update.customerPaymentProfileID);
                     Console.WriteLine("Update Time (UTC): {0}", update.updateTimeUTC);
@@ -57,9 +57,9 @@ namespace net.authorize.sample
                     Console.WriteLine("Reason Description: {0}", update.reasonDescription);
                 }
 
-                foreach (var delete in response.auDetails.auDelete)
+                foreach (var delete in response.auDetails)
                 {
-                    Console.WriteLine("Profile ID / Payment Profile ID: {0} / {1}", delete.customerProfileID, update.customerPaymentProfileID);
+                    Console.WriteLine("Profile ID / Payment Profile ID: {0} / {1}", delete.customerProfileID, delete.customerPaymentProfileID);
                     Console.WriteLine("Update Time (UTC): {0}", delete.updateTimeUTC);
                     Console.WriteLine("Reason Code: {0}", delete.auReasonCode);
                     Console.WriteLine("Reason Description: {0}", delete.reasonDescription);
